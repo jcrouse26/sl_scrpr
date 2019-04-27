@@ -14,9 +14,22 @@ def retreive_location_data():
     # find swells
 	swells = soup.find("div", {"class":"sl-spot-forecast-summary__stat-swells" })
 
-	daily_swells = []
-	current_conditions = []
+	# CONVERT BOTH OF THESE TO DICTS
+	
+	current_conditions = {
+		"swells" : {
+			"swell_1" : {},
+			"swell_2" : {},
+			"swell_3" : {}
+		},
+		"wind" : {
+			"speed" : 0,
+			"direction" : 0
+		}
+	}
+	# CONVERT BOTH OF THESE TO DICTS
 
+	index = 0
 	for swell in swells:
         
         # remove all unicode spaces
@@ -28,17 +41,13 @@ def retreive_location_data():
 		direction = swell_text.split(" ")[3]
 		angle = swell_text.split(" ")[4].replace(u'\u00ba',"")
 		
-        # create dictionary with attributes
-		swell_info = {
+        # create dict with swell named for index
+		current_conditions[swells]["swell_" + str(index + 1)] = {
 			"height" : height,
 			"period" : period,
 			"direction" : direction,
-			"angle" : angle
+			"angle" : angle,
 		}
-		
-        # append dictionary
-		daily_swells.append(swell_info)
-
 	wind_html = soup.find("div", {"class":"sl-spot-forecast-summary__stat-container sl-spot-forecast-summary__stat-container--wind"})
 	wind_speed_kts = wind_html.find("div", {"class":"sl-spot-forecast-summary__stat-reading"}).text.split('K')[0]
 	wind_speed_mph = int(wind_speed_kts) * 1.151
@@ -51,14 +60,14 @@ def retreive_location_data():
 	# wind = wind_speed + " @ " + wind_direction ## hide until converting wind to json
 
 	# This will make sense eventually
-	wind = {
-		"speed" : wind_speed_mph,
-		"direction" : wind_direction,
-		"angle" : wind_angle
-	} 
+	# wind = {
+	# 	"speed" : wind_speed_mph,
+	# 	"direction" : wind_direction,
+	# 	"angle" : wind_angle
+	# } 
 
-	current_conditions.append(daily_swells)
-	current_conditions.append(wind) ## hide while testing wind
+	# current_conditions.append(daily_swells)
+	# current_conditions.append(wind) ## hide while testing wind
 
 	# print(current_conditions)
 	# return jsonify(current_conditions)
