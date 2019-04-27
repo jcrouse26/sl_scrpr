@@ -39,24 +39,28 @@ def retreive_location_data():
         # append dictionary
 		daily_swells.append(swell_info)
 
-	wind = soup.find("div", {"class":"sl-spot-forecast-summary__stat-container sl-spot-forecast-summary__stat-container--wind"})
-	print(wind)
-	wind_mph = wind.find("div", {"class":"sl-spot-forecast-summary__stat-reading"}).text
-	print(wind_mph)
-	wind_direction = wind.find("span", {"sl-reading-description"}).text
+	wind_html = soup.find("div", {"class":"sl-spot-forecast-summary__stat-container sl-spot-forecast-summary__stat-container--wind"})
+	wind_speed_kts = wind_html.find("div", {"class":"sl-spot-forecast-summary__stat-reading"}).text.split('K')[0]
+	wind_speed_mph = int(wind_speed_kts) * 1.151
+
+	wind_direction = wind_html.find("span", {"sl-reading-description"}).text.split(' ')[0]
+	wind_angle = wind_html.find("span", {"sl-reading-description"}).text.split(' ')[1]
 
 
 
-	# wind = wind_mph + " @ " + wind_direction ## hide until converting wind to json
+	# wind = wind_speed + " @ " + wind_direction ## hide until converting wind to json
 
 	# This will make sense eventually
-		# wind_info = {
-		# 	"speed" : 
-		# } ## 
-	current_conditions.append(daily_swells)
-	# current_conditions.append(wind) ## hide while testing wind
+	wind = {
+		"speed" : wind_speed_mph,
+		"direction" : wind_direction,
+		"angle" : wind_angle
+	} 
 
-	print(current_conditions)
+	current_conditions.append(daily_swells)
+	current_conditions.append(wind) ## hide while testing wind
+
+	# print(current_conditions)
 	# return jsonify(current_conditions)
 
 retreive_location_data()
