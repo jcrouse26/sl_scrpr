@@ -1,0 +1,23 @@
+{
+    "swells" : {
+        "swell_1" : {
+            "height" : 12,
+            "period" : 10,
+            "direction" : 225
+        },
+        "swell_2" : {
+            "height" : 12,
+            "period" : 10,
+            "direction" : 225
+        },
+        "swell_3" : {
+            "height" : 12,
+            "period" : 10,
+            "direction" : 225
+        }
+    },
+    "wind" : {
+        "speed" : 12,
+        "direction" : 250
+    }
+}
